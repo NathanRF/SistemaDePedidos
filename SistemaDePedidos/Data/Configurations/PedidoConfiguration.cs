@@ -20,3 +20,4 @@ namespace SistemaDePedidos.Data.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
+}
