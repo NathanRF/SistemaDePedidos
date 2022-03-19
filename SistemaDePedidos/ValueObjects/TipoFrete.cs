@@ -1,9 +1,9 @@
 ﻿namespace SistemaDePedidos.ValueObjects
 {
-    public enum TipoFrete
-    {
-        CIF,
-        FOB,
-        SemFrete
-    }
+  public enum TipoFrete
+  {
+    CIF,
+    FOB,
+    SemFrete
+  }
 }

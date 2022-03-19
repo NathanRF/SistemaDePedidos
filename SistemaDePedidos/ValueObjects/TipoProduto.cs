@@ -1,9 +1,9 @@
 ﻿namespace SistemaDePedidos.ValueObjects
 {
-    public enum TipoProduto
-    {
-        MercadoriaParaRevenda,
-        Embalagem,
-        Servico
-    }
+  public enum TipoProduto
+  {
+    MercadoriaParaRevenda,
+    Embalagem,
+    Servico
+  }
 }

@@ -4,20 +4,20 @@ using SistemaDePedidos.Domain;
 
 namespace SistemaDePedidos.Data.Configurations
 {
-    public class PedidoConfiguration : IEntityTypeConfiguration<Pedido>
+  public class PedidoConfiguration : IEntityTypeConfiguration<Pedido>
+  {
+    public void Configure(EntityTypeBuilder<Pedido> builder)
     {
-        public void Configure(EntityTypeBuilder<Pedido> builder)
-        {
-            builder.ToTable("Pedidos");
-            builder.HasKey(p => p.Id);
-            builder.Property(p => p.InciadoEm).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
-            builder.Property(p => p.Status).HasConversion<string>();
-            builder.Property(p => p.TipoFrete).HasConversion<int>();
-            builder.Property(p => p.Observacao).HasColumnType("VARCHAR(512)");
+      builder.ToTable("Pedidos");
+      builder.HasKey(p => p.Id);
+      builder.Property(p => p.InciadoEm).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+      builder.Property(p => p.Status).HasConversion<string>();
+      builder.Property(p => p.TipoFrete).HasConversion<int>();
+      builder.Property(p => p.Observacao).HasColumnType("VARCHAR(512)");
 
-            builder.HasMany(p => p.Itens)
-                .WithOne(p => p.Pedido)
-                .OnDelete(DeleteBehavior.Cascade);
-        }
+      builder.HasMany(p => p.Itens)
+          .WithOne(p => p.Pedido)
+          .OnDelete(DeleteBehavior.Cascade);
     }
+  }
 }
