@@ -7,8 +7,8 @@ namespace SistemaDePedidos.Data
   {
     public DbSet<Pedido> Pedidos { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
-    public DbSet<PedidoItem> PedidoItem { get; set; }
-    public DbSet<Produto> Produto { get; set; }
+    public DbSet<PedidoItem> PedidoItens { get; set; }
+    public DbSet<Produto> Produtos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
