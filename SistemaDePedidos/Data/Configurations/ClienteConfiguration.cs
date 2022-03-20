@@ -9,7 +9,7 @@ namespace SistemaDePedidos.Data.Configurations
     public void Configure(EntityTypeBuilder<Cliente> builder)
     {
       builder.ToTable("Clientes");
-      builder.HasKey(p => p.ID);
+      builder.HasKey(p => p.Id);
       builder.Property(p => p.Nome).HasColumnType("VARCHAR(80)").IsRequired();
       builder.Property(p => p.Telefone).HasColumnType("CHAR(11)").IsRequired();
       builder.Property(p => p.CEP).HasColumnType("CHAR(8)").IsRequired();
