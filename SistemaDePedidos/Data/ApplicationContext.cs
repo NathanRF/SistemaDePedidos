@@ -12,7 +12,9 @@ namespace SistemaDePedidos.Data
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      optionsBuilder.UseSqlServer(Settings.SqlServerConnectionString);
+      //optionsBuilder.UseSqlServer(Settings.SqlServerConnectionString);
+      optionsBuilder.UseSqlite(Settings.SqliteConnectionString);
+      //optionsBuilder.LogTo(System.Console.WriteLine);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

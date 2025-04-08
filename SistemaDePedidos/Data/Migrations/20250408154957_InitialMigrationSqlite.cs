@@ -1,40 +1,44 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace SistemaDePedidos.Data.Migrations
 {
-    public partial class PrimeiraMigracao : Migration
+    /// <inheritdoc />
+    public partial class InitialMigrationSqlite : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Clientes",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Nome = table.Column<string>(type: "VARCHAR(80)", nullable: false),
                     Telefone = table.Column<string>(type: "CHAR(11)", nullable: false),
                     CEP = table.Column<string>(type: "CHAR(8)", nullable: false),
                     Estado = table.Column<string>(type: "CHAR(2)", nullable: false),
-                    Cidade = table.Column<string>(maxLength: 60, nullable: false)
+                    Cidade = table.Column<string>(type: "TEXT", maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clientes", x => x.ID);
+                    table.PrimaryKey("PK_Clientes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Produtos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     CodigoBarras = table.Column<string>(type: "VARCHAR(14)", nullable: false),
                     Descricao = table.Column<string>(type: "VARCHAR(60)", nullable: true),
-                    Valor = table.Column<decimal>(nullable: false),
-                    TipoProduto = table.Column<string>(nullable: false),
-                    Ativo = table.Column<bool>(nullable: false)
+                    Valor = table.Column<decimal>(type: "TEXT", nullable: false),
+                    TipoProduto = table.Column<string>(type: "TEXT", nullable: false),
+                    Ativo = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,13 +49,13 @@ namespace SistemaDePedidos.Data.Migrations
                 name: "Pedidos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ClienteId = table.Column<int>(nullable: false),
-                    InciadoEm = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
-                    FinalizadoEm = table.Column<DateTime>(nullable: false),
-                    TipoFrete = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ClienteId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IniciadoEm = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValueSql: "GETDATE()"),
+                    FinalizadoEm = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TipoFrete = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: false),
                     Observacao = table.Column<string>(type: "VARCHAR(512)", nullable: true)
                 },
                 constraints: table =>
@@ -61,33 +65,33 @@ namespace SistemaDePedidos.Data.Migrations
                         name: "FK_Pedidos_Clientes_ClienteId",
                         column: x => x.ClienteId,
                         principalTable: "Clientes",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PedidoItem",
+                name: "PedidoItens",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PedidoId = table.Column<int>(nullable: false),
-                    ProdutoId = table.Column<int>(nullable: false),
-                    Quantidade = table.Column<int>(nullable: false, defaultValue: 1),
-                    Valor = table.Column<decimal>(nullable: false),
-                    Desconto = table.Column<decimal>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PedidoId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProdutoId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Quantidade = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 1),
+                    Valor = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Desconto = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PedidoItem", x => x.Id);
+                    table.PrimaryKey("PK_PedidoItens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PedidoItem_Pedidos_PedidoId",
+                        name: "FK_PedidoItens_Pedidos_PedidoId",
                         column: x => x.PedidoId,
                         principalTable: "Pedidos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PedidoItem_Produtos_ProdutoId",
+                        name: "FK_PedidoItens_Produtos_ProdutoId",
                         column: x => x.ProdutoId,
                         principalTable: "Produtos",
                         principalColumn: "Id",
@@ -100,13 +104,13 @@ namespace SistemaDePedidos.Data.Migrations
                 column: "Telefone");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PedidoItem_PedidoId",
-                table: "PedidoItem",
+                name: "IX_PedidoItens_PedidoId",
+                table: "PedidoItens",
                 column: "PedidoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PedidoItem_ProdutoId",
-                table: "PedidoItem",
+                name: "IX_PedidoItens_ProdutoId",
+                table: "PedidoItens",
                 column: "ProdutoId");
 
             migrationBuilder.CreateIndex(
@@ -115,10 +119,11 @@ namespace SistemaDePedidos.Data.Migrations
                 column: "ClienteId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PedidoItem");
+                name: "PedidoItens");
 
             migrationBuilder.DropTable(
                 name: "Pedidos");

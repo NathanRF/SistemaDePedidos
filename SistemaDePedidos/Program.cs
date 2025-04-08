@@ -12,19 +12,24 @@ namespace CursoEFCore
   {
     public static void Main()
     {
-      //InserirDados();
-      //InserirDadosEmMassa();
-      //ConsultarDados();
-      //CadastrarPedido();
-      //ConsultarPedidoCarregamentoAdiantado();
-      //AtualizarDados();
-      RemoverRegistro();
+      var db = new ApplicationContext();
+      AplicarMigracoes(db);
+      InserirDados(db);
+      InserirDadosEmMassa(db);
+      ConsultarDados(db);
+      //CadastrarPedido(db);
+      //ConsultarPedidoCarregamentoAdiantado(db);
+      //AtualizarDados(db);
+      //RemoverRegistro(db);
     }
 
-    private static void RemoverRegistro()
+    private static void AplicarMigracoes(ApplicationContext db)
     {
-      using var db = new ApplicationContext();
+      db.Database.Migrate();
+    }
 
+    private static void RemoverRegistro(ApplicationContext db)
+    {
       //var cliente = db.Clientes.Find(2);
       var cliente = new Cliente { Id = 3 };
       //db.Clientes.Remove(cliente);
@@ -34,9 +39,8 @@ namespace CursoEFCore
       db.SaveChanges();
     }
 
-    private static void AtualizarDados()
+    private static void AtualizarDados(ApplicationContext db)
     {
-      using var db = new ApplicationContext();
       //var cliente = db.Clientes.Find(1);
 
       var cliente = new Cliente
@@ -57,9 +61,8 @@ namespace CursoEFCore
       db.SaveChanges();
     }
 
-    private static void ConsultarPedidoCarregamentoAdiantado()
+    private static void ConsultarPedidoCarregamentoAdiantado(ApplicationContext db)
     {
-      using var db = new ApplicationContext();
       var pedidos = db
           .Pedidos
           .Include(p => p.Itens)
@@ -69,10 +72,8 @@ namespace CursoEFCore
       Console.WriteLine(pedidos.Count);
     }
 
-    private static void CadastrarPedido()
+    private static void CadastrarPedido(ApplicationContext db)
     {
-      using var db = new ApplicationContext();
-
       var cliente = db.Clientes.FirstOrDefault();
       var produto = db.Produtos.FirstOrDefault();
 
@@ -101,9 +102,8 @@ namespace CursoEFCore
       db.SaveChanges();
     }
 
-    private static void ConsultarDados()
+    private static void ConsultarDados(ApplicationContext db)
     {
-      using var db = new ApplicationContext();
       //var consultaPorSintaxe = (from c in db.Clientes where c.Id>0 select c).ToList();
       var consultaPorMetodo = db.Clientes
           .Where(p => p.Id > 0)
@@ -118,7 +118,7 @@ namespace CursoEFCore
       }
     }
 
-    private static void InserirDadosEmMassa()
+    private static void InserirDadosEmMassa(ApplicationContext db)
     {
       var produto = new Produto
       {
@@ -158,8 +158,6 @@ namespace CursoEFCore
                 },
             };
 
-
-      using var db = new ApplicationContext();
       //db.AddRange(produto, cliente);
       db.Set<Cliente>().AddRange(listaClientes);
       //db.Clientes.AddRange(listaClientes);
@@ -168,7 +166,7 @@ namespace CursoEFCore
       Console.WriteLine($"Total Registro(s): {registros}");
     }
 
-    private static void InserirDados()
+    private static void InserirDados(ApplicationContext db)
     {
       var produto = new Produto
       {
@@ -178,11 +176,9 @@ namespace CursoEFCore
         TipoProduto = TipoProduto.MercadoriaParaRevenda,
         Ativo = true
       };
-
-      using var db = new ApplicationContext();
-      db.Produtos.Add(produto);
-      db.Set<Produto>().Add(produto);
-      db.Entry(produto).State = EntityState.Added;
+      //db.Produtos.Add(produto);
+      //db.Set<Produto>().Add(produto);
+      //db.Entry(produto).State = EntityState.Added;
       db.Add(produto);
 
       var registros = db.SaveChanges();
